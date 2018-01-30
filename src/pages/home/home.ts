@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
-import { CustomFormsModule } from 'ng2-validation'
 
 @Component({
   selector: 'page-home',
@@ -17,8 +16,13 @@ export class HomePage {
   erreur: boolean = false;
   strResultat: string[] = ["", "", ""];
 
-  constructor(public navCtrl: NavController, private CustForMod: CustomFormsModule, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController) {
 
+  }
+
+  public precisionRound(nb: number,precision: number) {
+  var factor = Math.pow(10, precision);
+  return Math.round(nb * factor) / factor;
   }
 
   private showGouttes()
@@ -29,8 +33,8 @@ export class HomePage {
       var nbGouttes = qArome*30;
       var liquideRestant = this.totaLiquide - qArome;
       this.strResultat[0] = "Résultat de votre composition finale : ";
-      this.strResultat[1] = "Arôme : "+qArome+" mL soit "+nbGouttes+" gouttes. ";
-      this.strResultat[2] = "Liquide : "+liquideRestant+" mL";
+      this.strResultat[1] = "Arôme : "+this.precisionRound(qArome, 1)+" mL soit "+this.precisionRound(nbGouttes, 0)+" gouttes. ";
+      this.strResultat[2] = "Liquide : "+this.precisionRound(liquideRestant, 1)+" mL";
       this.erreur = false;
     }
     else
